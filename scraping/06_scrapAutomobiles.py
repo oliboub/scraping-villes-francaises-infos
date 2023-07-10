@@ -240,7 +240,7 @@ def main():
     categorie = 'auto'    
     
     global targetFile
-    targetFile="../dataset/"+categorie+".csv"
+    targetFile="../dataset/"+categorie+"s.csv"
     
     global tableauLiens
     tableauLiens = pd.read_csv(sourceFile,encoding='utf-8')       

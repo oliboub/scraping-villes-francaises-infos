@@ -61,6 +61,28 @@ colonnes = [
 "Autres écoles d'enseignement supérieur",
 "Autres formations post-bac non universitaire"]
     
+    
+
+# "Personnes non scolarisées Centres de formation d'apprentis (hors agricoles)",
+# "Personnes non scolarisées Ecoles d'ingénieurs",
+# 'Personnes non scolarisées Collèges',
+# 'Personnes non scolarisées Lycées généraux',
+# 'Personnes non scolarisées Etablissements de formation aux métiers du sport',
+# 'Personnes non scolarisées Ecoles maternelles',
+# "Personnes non scolarisées Ecoles de commerce, gestion, administration d'entreprises, comptabilité, vente",
+# 'Personnes non scolarisées Etablissements avec classes préparatoires aux grandes écoles', 
+# 'Personnes non scolarisées Instituts universitaires (IUP, IUT et IUFM)', 
+# 'Personnes non scolarisées Autres formations post-bac non universitaire', 
+# 'Personnes non scolarisées Ecoles de formation sanitaire et sociale', 
+# "Personnes non scolarisées Autres écoles d'enseignement supérieur", 
+# 'Personnes non scolarisées Ecoles élémentaires', 
+# 'Personnes non scolarisées Unités de formation et de recherche (UFR)', 
+# 'Personnes non scolarisées Lycées agricoles', 
+# 'Personnes non scolarisées Lycées professionnels', 
+# "Personnes non scolarisées Centres de formation d'apprentis agricoles"
+
+
+
 # fonction qui va nous permettre de faire la difference entre les elements scrapes et non scrapes
 
 #https://www.journaldunet.com/patrimoine/prix-immobilier/abbenans/ville-25003
@@ -94,7 +116,7 @@ targetMsg = targetFile.split('/')[2]
 #print(targetMsg)
 
 global parallelization
-parallelization = 15
+parallelization = 20
 
 # Parer a l'eventualite que le script s'est arreté
 if os.path.isfile(targetFile):
@@ -119,7 +141,9 @@ def parse(lien):
     dico = {i : 'nc' for i in colonnes}
     dico['lien'] = lien
     dico['ville'] = tableauLiens[tableauLiens['lien'] == lien]['ville'].iloc[0]
-
+    
+    #print(dico)
+    
     req = requests.get(lien + "/education")
     time.sleep(3)
     
@@ -127,35 +151,40 @@ def parse(lien):
         
         contenu = req.content
         soup = bs(contenu, "html.parser")
-
+        #print(lien)
         tables = soup.findAll('table', class_= "odTable odTableAuto")
+        #print(len(tables))
         for i in range(len(tables)):
-            #print(i)
+            
             for table in tables[i].findAll('tr')[1:]: # [1:]:
                 #print(table)
                 try:
                     #print(table)
+                    #print(i,table)
+
                     cle = table.findAll('td')[0].text
-                    tempCle = cle
+                    #print(cle)
                     if i == 0:
-                        cle = 'Personnes scolarisées '+ tempCle
-                    if i ==1:                        
-                        cle = 'Personnes non scolarisées '+ tempCle
-                    if i ==2:
-                        cle = 'Part des hommes '+ tempCle
-                        cle1 = 'Part des femmes ' + tempCle
+                        cle = 'Personnes scolarisées '+ cle
+                    if i ==1 and len(tables)>2:                        
+                        cle = 'Personnes non scolarisées '+ cle
+                    if i ==2 and len(tables)>2:
+                        cle1 = 'Part des hommes '+ cle
+                        cle2 = 'Part des femmes ' + cle
                         valeur1 = float(table.findAll('td')[3].text.replace('\xa0','').replace(',','.').split()[0])                        
                         #print('cle1',cle1,'\tvaleur1:',valeur1)
-                        dico[cle1] = valeur1
+                        dico[cle2] = valeur1
+                        cle=cle1
                     valeur = float(table.findAll('td')[1].text.replace('\xa0','').replace(',','.').split()[0])
-                    #print('cle',cle,'\tvaleur:',valeur)
                     dico[cle] = valeur
-                    
+                    #print('cle',cle,'\tvaleur:',valeur)
+                        
                 except:
                     print('-->', lien, 'nothing to do')
-                    
-            
+                        
                 
+                
+        #print(dico)
         #for j in dico:
         #    print(j,end =',\n')                
     
@@ -167,7 +196,7 @@ def parse(lien):
         
     elif req.status_code ==  403:
         print(req.status_code," ",lien,'pid:',os.getpid())
-        print("parallelizatrion", parallelization,' is too high, or timesleep is too low')
+        print("parallelization", parallelization,' is too high, or timesleep is too low')
         print("Wait few minutes before relaunching, like site have probably blocked temporarly your internet adress..")
         sys.exit(1)
         
