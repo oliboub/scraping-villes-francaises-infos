@@ -9,6 +9,7 @@ import time
 import csv
 import os
 import re
+import sys
 
 
 listeCles = ['ville',
@@ -49,7 +50,7 @@ def diff(list1, list2):
     return list(set(list1).symmetric_difference(set(list2)))
 
 global sourceFile
-sourceFile = "../dataset/villes100.csv"
+sourceFile = "../dataset/villesTotal.csv"
 
 global targetFile
 targetFile= "../dataset/salaires.csv"
