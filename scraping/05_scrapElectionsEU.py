@@ -123,11 +123,11 @@ def parse(lien):
                     try:
                         #valeur = tr.findAll('td')[1].text
                         #valeur = float(''.join(valeur.split()))
-                        valeur = float(tr.findAll('td')[1].text.replace('%','').strip().replace(" ",""))
+                        valeur = float(tr.findAll('td')[1].text.replace('%','').strip().replace(",",".").replace(" ",""))
                         #print(valeur)
                                                 
                     except:
-                        valeur = tr.findAll('td')[1].text.replace('%','').strip().replace(" ","")
+                        valeur = tr.findAll('td')[1].text.replace('%','').strip().replace(",",".").replace(" ","")
                     dico[cle] = valeur
 
             dico1 = dico
@@ -141,7 +141,7 @@ def parse(lien):
 
             for tr1 in tousLesTr1[1:]: # affiche à partir de l'index 1 et evite le premier tr
                 txt0 = tr1.findAll('td')[0].text.split('\n')[2]
-                txt1 = tr1.findAll('td')[1].text.replace('%','').strip()
+                txt1 = tr1.findAll('td')[1].text.replace('%','').strip().replace(",",".").replace(" ","")
                 dico[txt0] = txt1
             
             dico1 =dico
@@ -198,7 +198,7 @@ def main():
     global dico
     dico = {
 
-        **{ i : '' for i in listeCles },
+        **{ i : 'nc' for i in listeCles },
     }
    
     sorted(dico.items(), key=lambda t: t[0])

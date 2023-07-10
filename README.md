@@ -26,3 +26,5 @@ J'ai mis les fichiers résultats dans <span style="color:orange">./dataset</span
 Note: pour que les scripts fonctionnent, il faut etre positionné dans le répertoire ./scraping, car les fichiers dataset sont recherchés dans le répertoire <span style="color:orange">"../dataset"</span>
 
 Le fichier  <span style="color:green">liensVilles.csv</span> est renommé <span style="color:green">villesTotal.csv</span>, car c'est plus simple quand je fais des tests avec <span style="color:green">villes1.csv</span>, <span style="color:green">villes5.csv</span> ou <span style="color:green">villes100.csv</span>
+
+Update: All files of dataset have been cleanned to have <span style="color:blue">float</span> dtype for values.
