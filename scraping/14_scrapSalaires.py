@@ -60,7 +60,7 @@ targetMsg = targetFile.split('/')[2]
 #print(targetMsg)
 
 global parallelization
-parallelization = 5
+parallelization = 25
 
 # Parer a l'eventualite que le script s'est arreté
 if os.path.isfile(targetFile):
